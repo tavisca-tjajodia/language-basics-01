@@ -9,7 +9,7 @@ namespace Tavisca.Bootcamp.LanguageBasics.Exercise1
             Test("42*47=1?74", 9);
             Test("4?*47=1974", 2);
             Test("42*?7=1974", 4);
-            Test("42*?47=1974", -1);
+            Test("42*?47=1974",-1);
             Test("2*12?=247", -1);
             Console.ReadKey(true);
         }
@@ -20,47 +20,46 @@ namespace Tavisca.Bootcamp.LanguageBasics.Exercise1
             Console.WriteLine($"{args} : {result}");
         }
 
+        public static float giveMeMissingNumber(int firstNumber, int secondNumber, string operatorUsed){
+                
+                if(operatorUsed.Equals("/")){
+                    return (float) firstNumber / (float)secondNumber ;  
+                }else
+                {
+                    return (float)firstNumber * (float)secondNumber;
+                }
+        }
+
         public static int FindDigit(string equation)
         {
             string[] number = equation.Split("*");
-            string[] number1 = number[1].Split("=");
+            string first = "" ,second= "",third = "";
             
-            string first = number[0];
-            string second = number1[0];
-            string third = number1[1];
-    
-            int assumedNumber = 0;
+            if(number.Length >= 1){
+                string[] number1 = number[1].Split("=");
+                first = number[0];
+                
+                second = number1[0];
+                third = number1[1];
+            }
+			
+            float assumedNumber = 0.0F; 
             string numberToBeFound = "";
 
             if(first.Contains("?")){
-                int secondNumber = int.Parse(second);
-                int result = int.Parse(third);
-
-                assumedNumber = result / secondNumber;
-                float assumedNumberCheck = (float) result / (float) secondNumber;
-
-                if(assumedNumber != assumedNumberCheck)
-                    return -1;
-                
+                assumedNumber = giveMeMissingNumber(int.Parse(third),int.Parse(second),"/");
                 numberToBeFound = first;
+                if(assumedNumber % 1 != 0)
+                    return -1;
             }
             else if(second.Contains("?")){
-                int firstNumber = int.Parse(first);
-                int result = int.Parse(third);
-
-                assumedNumber = result / firstNumber;
-                float assumedNumberCheck = (float)result /(float)firstNumber ;
-
-                if(assumedNumber != assumedNumberCheck)
-                    return -1;
-
+                assumedNumber =giveMeMissingNumber(int.Parse(third),int.Parse(first),"/");; 
                 numberToBeFound = second;
+                if(assumedNumber % 1 != 0)
+                    return -1;
             }
             else{
-                int firstNumber = int.Parse(first);
-                int secondNumber = int.Parse(second);
-                assumedNumber = firstNumber * secondNumber;
-                
+                assumedNumber =giveMeMissingNumber(int.Parse(first),int.Parse(second),"*");
                 numberToBeFound = third;
             }
 
@@ -68,12 +67,6 @@ namespace Tavisca.Bootcamp.LanguageBasics.Exercise1
                 return int.Parse(assumedNumber.ToString()[numberToBeFound.IndexOf("?")].ToString());
             else
                 return -1;
-
-            throw new NotImplementedException();
-
-
-
-
         }
     }
 }
